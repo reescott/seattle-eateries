@@ -17,14 +17,6 @@ var Eateries = function(){
 
 };
 
-
-
-// YELP
-// Consumer Key	xFOuNu3x0ZHSoMW9UPBLCQ
-// Consumer Secret	y2fGzEszxKO11X53LNdrMGm9mbg
-// Token	ynHAXI2DplMOsIrStrXIZ9v9ixwlJK-u
-// Token Secret	-uiGFw6s36Wsrwpn0v6Xw6mbg2M
-
 var eateriesViewModel = function() {
     var self = this;
     self.currentEatery = ko.observable();
