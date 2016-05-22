@@ -1,0 +1,27 @@
+{"eateries" : [
+  {
+    "name": "The Walrus and the Carpenter",
+    "website": "http://www.thewalrusbar.com/http://www.thewalrusbar.com/",
+    "logo": "http://www.thewalrusbar.com/assets/images/walrus-logo.png"
+  },
+  {
+    "name": "Spinasse",
+    "website": "http://www.spinasse.com/",
+    "logo": "http://www.spinasse.com/themes/spinasse/images/logo.gif"
+  },
+  {
+    "name": "Bar Cotto",
+    "website": "http://www.ethanstowellrestaurants.com/locations/bar-cotto/",
+    "logo": "http://www.ethanstowellrestaurants.com/site/assets/files/1233/bc.svg"
+  },
+  {
+    "name": "Poppy's",
+    "website": "http://www.poppyseattle.com/",
+    "logo": "http://static1.squarespace.com/static/5602d6b8e4b033fa7454608b/56130c5fe4b0ef382da67a40/5665cd4669492ed585029f66/1449514289421/Poppy-Restaurant-Seattle_27.jpg?format=1000w"
+  },
+  {
+    "name": "Anchiovi & Olives",
+    "website": "http://www.ethanstowellrestaurants.com/locations/anchovies-and-olives/",
+    "logo": "http://www.ethanstowellrestaurants.com/site/assets/files/1012/ao.svg"
+  }]
+}
