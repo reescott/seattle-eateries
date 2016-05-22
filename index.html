@@ -1,0 +1,138 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Seattle Eateries</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="stylesheet" href="node_modules/foundation-apps/dist/css/foundation-apps.min.css">
+
+        <!-- <link rel="stylesheet" href="assets/css/normalize.min.css"> -->
+        <link rel="stylesheet" href="assets/css/main.css">
+
+        <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+
+      <div class="grid-frame vertical">
+        <div class="grid-block shrink wrap">
+          <div class="grid-content collapse small-12 medium-6">
+            <ul class="menu-bar dark">
+              <li><a href="#">zTravel</a></li>
+            </ul>
+          </div>
+          <div class="grid-content collapse small-12 medium-6">
+            <ul class="menu-bar dark">
+              <li><a>Listings</a></li>
+              <li><a>Photos</a></li>
+              <li><a>Reviews</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid-block">
+          <div class="grid-block show-for-medium medium-6">
+            <div id="map"></div>
+            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12697.758051669445!2d-121.95161!3d37.284716!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe18714a9ccfec34d!2sZURB!5e0!3m2!1sen!2sus!4v1417659982534" width="100%" height="1200px" frameborder="0" style="border:0"></iframe> -->
+          </div>
+          <div class="grid-block small-12 medium-6 wrap main-content">
+            <h1>Eateries</h1>
+            <div data-bind="foreach: allEateries">
+              <div class="grid-content">
+                <div class="dark card">
+                  <img data-bind="attr: { src: logoImage, title: name + ' Logo' }">
+                  <div class="card-divider" data-bind="text: fullAddress"></div>
+                  <div class="card-section">
+                    <h4 data-bind="text: name"></h4>
+                    <p>Rating: <span data-bind="text: rating"></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- <div class="header-container">
+            <header class="wrapper clearfix">
+                <h1 class="title">h1.title</h1>
+                <nav>
+                    <ul>
+                        <li><a href="#">nav ul li a</a></li>
+                        <li><a href="#">nav ul li a</a></li>
+                        <li><a href="#">nav ul li a</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+
+                <article>
+                    <header>
+                        <h1>article header h1</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec.</p>
+                    </header>
+                    <section>
+                        <h2>article section h2</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices. Proin in est sed erat facilisis pharetra.</p>
+                    </section>
+                    <section>
+                        <h2>article section h2</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices. Proin in est sed erat facilisis pharetra.</p>
+                    </section>
+                    <footer>
+                        <h3>article footer h3</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor.</p>
+                    </footer>
+                </article>
+
+                <aside>
+                    <h3>aside</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                </aside>
+
+            </div> <!-- #main -->
+        <!-- </div> <!-- #main-container -->
+
+        <!-- <div class="footer-container">
+            <footer class="wrapper">
+                <h3>footer</h3>
+            </footer>
+        </div> -->
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        <script src="node_modules/knockout/build/output/knockout-latest.js"></script>
+        <script src="assets/js/plugins.js"></script>
+        <!-- <script src="node_modules/oauth-signature/dist/oauth-signature.min.js"></script> -->
+        <!-- <script src="assets/js/main.js"></script> -->
+
+        <script>
+          var map;
+          function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: -34.397, lng: 150.644},
+              zoom: 8
+            });
+          }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7eAPWbOuuUSFETnnVcUcsgV10r-kyJ3c&callback=initMap" async defer></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!-- <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script> -->
+    </body>
+</html>
