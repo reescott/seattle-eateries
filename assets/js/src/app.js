@@ -1,19 +1,13 @@
-class Eatery {
-  constructor(eateryObject) {
-    this.name = ko.observable(eateryObject.newName);
-    this.addressLine1 = ko.observable(eateryObject.newAddressLine1);
-    this.addressLine2 = ko.observable(eateryObject.newAddressLine2);
-    this.website = eateryObject.website;
-    this.logoImage = ko.observable(eateryObject.newLogo);
-    this.rating = ko.observable(eateryObject.newRating);
-    this.lat = ko.observable(eateryObject.newLat);
-    this.long = ko.observable(eateryObject.newLong);
-
-    this.fullAddress = ko.computed(function() {
-      return this.addressLine1() + ", " + this.addressLine2();
-    }, this);
-  }
-}
+// let Eatery = {
+//     this.name = ko.observable(eateryObject.newName);
+//     this.addressLine1 = ko.observable(eateryObject.newAddressLine1);
+//     this.addressLine2 = ko.observable(eateryObject.newAddressLine2);
+//     this.website = eateryObject.website;
+//     this.logoImage = ko.observable(eateryObject.newLogo);
+//     this.rating = ko.observable(eateryObject.newRating);
+//     this.lat = ko.observable(eateryObject.newLat);
+//     this.long = ko.observable(eateryObject.newLong);
+// };
 
 class Eateries {
   constructor() {
@@ -34,29 +28,26 @@ class Eateries {
     this.rawData.eateries.forEach(business => {
       that.getYelpData(business);
     });
-    eateriesViewModel.setupVars();
-    startApp();
   }
   buildEatery(business, eateryObject) {
     let that = this;
-    that.data.push(
-      new Eatery({
-        "newName": eateryObject.name,
-        "newAddressLine1": eateryObject.location.address,
-        "newAddressLine2": eateryObject.location.city +
-        ', ' + eateryObject.location.state_code +
-        ' '  + eateryObject.location.postal_code,
-        "website": business.website,
-        "newLogo": business.logo,
-        "newRating": eateryObject.rating,
-        "newLat": eateryObject.location.coordinate.latitude,
-        "newLat": eateryObject.location.coordinate.longitude
-      })
-    );
+    that.data.push({
+      'name': ko.observable(eateryObject.name),
+      'addressLine1': ko.observable(eateryObject.location.address[0]),
+      'addressLine2': ko.observable(eateryObject.location.city),
+      'website': ko.observable(business.website),
+      'logoImage': ko.observable(business.logo),
+      'rating': ko.observable(eateryObject.rating),
+      'lat': ko.observable(eateryObject.location.coordinate.latitude),
+      'long': ko.observable(eateryObject.location.coordinate.longitude)
+    });
+
+    if(that.data.length == that.rawData.eateries.length) {
+      startApp();
+    }
   }
   getYelpData(business) {
     let that = this;
-    let result = {};
     jQuery.ajax('api/getYelpBusiness.php', {
       data: { business: business.name }
     })
@@ -66,20 +57,13 @@ class Eateries {
   }
 }
 
-let eateriesViewModel = {
-  init: function() {
-    this.Eateries = new Eateries();
-  },
-  setupVars: function() {
-    this.currentEatery = ko.observable(this.Eateries.data[0]);
-    this.allEateries = ko.observableArray(this.Eateries.data);
-    console.log(this.Eateries.data);
-  }
+var eateriesViewModel = {
+  allEateries: ko.observableArray()
 };
+
+let EateriesObject = new Eateries();
 
 let startApp = function () {
-  ko.applyBindings(eateriesViewModel);
-  console.log(eateriesViewModel);
+  eateriesViewModel.allEateries = ko.observableArray(EateriesObject.data);
+  ko.applyBindings(eateriesViewModel, document.getElementById('Eateries'));
 };
-
-eateriesViewModel.init();
