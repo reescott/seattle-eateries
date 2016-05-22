@@ -1,7 +1,7 @@
 # Seattle Eateries Project
 
 ### What is this?
-This is a personal project to play with creating a data driven web app to showcase some places to eat in Seattle.
+This is a personal project to play with creating a data driven web app. Just for fun, my favorite places to eat in Seattle will be showcased.
 
 ### How to install
 Method 1. Using **Git Clone**
