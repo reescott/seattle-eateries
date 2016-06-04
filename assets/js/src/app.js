@@ -1,14 +1,8 @@
-// let Eatery = {
-//     this.name = ko.observable(eateryObject.newName);
-//     this.addressLine1 = ko.observable(eateryObject.newAddressLine1);
-//     this.addressLine2 = ko.observable(eateryObject.newAddressLine2);
-//     this.website = eateryObject.website;
-//     this.logoImage = ko.observable(eateryObject.newLogo);
-//     this.rating = ko.observable(eateryObject.newRating);
-//     this.lat = ko.observable(eateryObject.newLat);
-//     this.long = ko.observable(eateryObject.newLong);
-// };
-
+/**
+ * Eatery Processor class, builds and holds Eatery Objects
+ * to make them available
+ * to Knockout and Google Maps
+ */
 class Eateries {
   constructor() {
     this.rawData = this.getEateriesJSON();
@@ -42,8 +36,10 @@ class Eateries {
       'long': ko.observable(eateryObject.location.coordinate.longitude)
     });
 
+    //All data loaded
     if(that.data.length == that.rawData.eateries.length) {
-      startApp();
+      eateriesViewModel.init(); //Initialize viewModel
+      theMapViewModel.plotMarkers();
     }
   }
   getYelpData(business) {
@@ -57,13 +53,57 @@ class Eateries {
   }
 }
 
+/**
+ * Eateries View Model
+ * @type {Object}
+ */
 var eateriesViewModel = {
-  allEateries: ko.observableArray()
+  allEateries: ko.observableArray(),
+  init: function () {
+    eateriesViewModel.allEateries = ko.observableArray(eateriesObject.data);
+    ko.applyBindings(eateriesViewModel, document.getElementById('Eateries'));
+  }
 };
 
-let EateriesObject = new Eateries();
 
-let startApp = function () {
-  eateriesViewModel.allEateries = ko.observableArray(EateriesObject.data);
-  ko.applyBindings(eateriesViewModel, document.getElementById('Eateries'));
-};
+/**
+ * Map View Model
+ * @credit: Some code borrowed from https://www.sitepoint.com/google-maps-javascript-api-the-right-way/
+ */
+class MapViewModel {
+  constructor() {
+    this.map;
+    this.markers = [];
+    this.bounds = {};
+  }
+  initMap(){
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 47.606, lng: -122.332},
+      zoom: 11
+    });
+  }
+  plotMarkers() {
+    let that = this;
+    this.bounds = new google.maps.LatLngBounds();
+    
+    eateriesObject.data.forEach(function (marker) {
+      let position = new google.maps.LatLng(marker.lat(), marker.long());
+
+      that.markers.push(
+        new google.maps.Marker({
+          position: position,
+          map: that.map,
+          animation: google.maps.Animation.DROP
+        })
+      );
+
+      that.bounds.extend(position);
+    });
+
+    this.map.fitBounds(this.bounds);
+  }
+}
+
+
+let eateriesObject = new Eateries();
+var theMapViewModel = new MapViewModel();

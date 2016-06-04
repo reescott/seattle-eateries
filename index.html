@@ -116,16 +116,8 @@
         <!-- <script src="node_modules/oauth-signature/dist/oauth-signature.min.js"></script> -->
         <script src="assets/js/dist/app.js"></script>
 
-        <script>
-          var map;
-          function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: -34.397, lng: 150.644},
-              zoom: 8
-            });
-          }
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7eAPWbOuuUSFETnnVcUcsgV10r-kyJ3c&callback=initMap" async defer></script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7eAPWbOuuUSFETnnVcUcsgV10r-kyJ3c&callback=theMapViewModel.initMap" async defer></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <!-- <script>

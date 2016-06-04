@@ -4,16 +4,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// let Eatery = {
-//     this.name = ko.observable(eateryObject.newName);
-//     this.addressLine1 = ko.observable(eateryObject.newAddressLine1);
-//     this.addressLine2 = ko.observable(eateryObject.newAddressLine2);
-//     this.website = eateryObject.website;
-//     this.logoImage = ko.observable(eateryObject.newLogo);
-//     this.rating = ko.observable(eateryObject.newRating);
-//     this.lat = ko.observable(eateryObject.newLat);
-//     this.long = ko.observable(eateryObject.newLong);
-// };
+/**
+ * Eatery Processor class, builds and holds Eatery Objects
+ * to make them available
+ * to Knockout and Google Maps
+ */
 
 var Eateries = function () {
   function Eateries() {
@@ -56,8 +51,10 @@ var Eateries = function () {
         'long': ko.observable(eateryObject.location.coordinate.longitude)
       });
 
+      //All data loaded
       if (that.data.length == that.rawData.eateries.length) {
-        startApp();
+        eateriesViewModel.init(); //Initialize viewModel
+        theMapViewModel.plotMarkers();
       }
     }
   }, {
@@ -75,13 +72,66 @@ var Eateries = function () {
   return Eateries;
 }();
 
+/**
+ * Eateries View Model
+ * @type {Object}
+ */
+
+
 var eateriesViewModel = {
-  allEateries: ko.observableArray()
+  allEateries: ko.observableArray(),
+  init: function init() {
+    eateriesViewModel.allEateries = ko.observableArray(eateriesObject.data);
+    ko.applyBindings(eateriesViewModel, document.getElementById('Eateries'));
+  }
 };
 
-var EateriesObject = new Eateries();
+/**
+ * Map View Model
+ * @credit: Some code borrowed from https://www.sitepoint.com/google-maps-javascript-api-the-right-way/
+ */
 
-var startApp = function startApp() {
-  eateriesViewModel.allEateries = ko.observableArray(EateriesObject.data);
-  ko.applyBindings(eateriesViewModel, document.getElementById('Eateries'));
-};
+var MapViewModel = function () {
+  function MapViewModel() {
+    _classCallCheck(this, MapViewModel);
+
+    this.map;
+    this.markers = [];
+    this.bounds = {};
+  }
+
+  _createClass(MapViewModel, [{
+    key: 'initMap',
+    value: function initMap() {
+      this.map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 47.606, lng: -122.332 },
+        zoom: 11
+      });
+    }
+  }, {
+    key: 'plotMarkers',
+    value: function plotMarkers() {
+      var that = this;
+      this.bounds = new google.maps.LatLngBounds();
+
+      eateriesObject.data.forEach(function (marker) {
+        var position = new google.maps.LatLng(marker.lat(), marker.long());
+
+        that.markers.push(new google.maps.Marker({
+          position: position,
+          map: that.map,
+          animation: google.maps.Animation.DROP
+        }));
+
+        that.bounds.extend(position);
+      });
+
+      this.map.fitBounds(this.bounds);
+    }
+  }]);
+
+  return MapViewModel;
+}();
+
+var eateriesObject = new Eateries();
+var theMapViewModel = new MapViewModel();
