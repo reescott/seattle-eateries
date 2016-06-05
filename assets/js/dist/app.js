@@ -28,13 +28,11 @@ var Eateries = function () {
       jQuery.ajax('assets/js/src/data.json').fail(function (response) {
         errorMessageHandler.displayError(defaultMessage);
       }).done(function (data) {
-        console.log(data);
         if (data) {
           try {
             that.rawData = data;
             that.buildEateriesArray();
           } catch (e) {
-            console.log(e);
             errorMessageHandler.displayError('Sorry! Parsing Data failed. Please try again later.'); //error in the above string(in this case,yes)!
             return false;
           }
@@ -84,7 +82,6 @@ var Eateries = function () {
       }).fail(function (response) {
         errorMessageHandler.displayError(defaultMessage);
       }).done(function (response) {
-        console.log(response);
         if (response) {
           var eateryJSON = {};
           try {
@@ -228,14 +225,6 @@ var MapViewModel = function () {
       this.infowindow.open(this.map, this.markers[index]);
     }
   }, {
-    key: 'hideMarkers',
-    value: function hideMarkers() {
-      console.log('hello');
-      console.log(eateriesObject.filterEateries);
-      // marker.setMap(this.map);
-      // marker.setMap(null);
-    }
-  }, {
     key: 'setupInfoWindow',
     value: function setupInfoWindow() {
       var that = this;
@@ -281,9 +270,6 @@ var ErrorMessageHandler = function () {
   _createClass(ErrorMessageHandler, [{
     key: 'displayError',
     value: function displayError(message) {
-      console.log();
-      // let errorMesssageDiv = document.querySelectorAll('#errorMessage');
-      // errorMesssageDiv.innerHTML(message);
       $('#errorMessage').html(message);
       $('#errorModal').foundation('open');
     }

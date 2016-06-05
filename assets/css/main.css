@@ -4,7 +4,7 @@ body {
 
 #map {
   width: 100%;
-  height: calc(100vh - 34px); }
+  height: calc(100vh - 67px); }
 
 .js-off-canvas-exit {
   height: 67px;

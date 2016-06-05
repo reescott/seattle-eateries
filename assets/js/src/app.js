@@ -18,13 +18,11 @@ class Eateries {
       errorMessageHandler.displayError(defaultMessage);
     })
     .done(function (data) {
-      console.log(data);
       if (data){
         try {
           that.rawData = data;
           that.buildEateriesArray();
         } catch(e) {
-          console.log(e);
           errorMessageHandler.displayError('Sorry! Parsing Data failed. Please try again later.'); //error in the above string(in this case,yes)!
           return false;
         }
@@ -70,7 +68,6 @@ class Eateries {
       errorMessageHandler.displayError(defaultMessage);
     })
     .done(function (response) {
-      console.log(response);
       if (response){
         let eateryJSON = {};
         try {
@@ -197,12 +194,6 @@ class MapViewModel {
     this.infowindow.setContent(content)
     this.infowindow.open(this.map, this.markers[index]);
   }
-  hideMarkers() {
-    console.log('hello');
-    console.log(eateriesObject.filterEateries);
-    // marker.setMap(this.map);
-    // marker.setMap(null);
-  }
   setupInfoWindow() {
     let that = this;
     this.infowindow = new google.maps.InfoWindow({
@@ -247,9 +238,6 @@ class MapViewModel {
 
 class ErrorMessageHandler {
   displayError(message) {
-    console.log();
-    // let errorMesssageDiv = document.querySelectorAll('#errorMessage');
-    // errorMesssageDiv.innerHTML(message);
     $('#errorMessage').html(message);
     $('#errorModal').foundation('open');
   }
