@@ -44,9 +44,12 @@ class Eateries {
       'name': ko.observable(eateryObject.name),
       'addressLine1': ko.observable(eateryObject.location.address[0]),
       'addressLine2': ko.observable(`${eateryObject.location.city}, ${eateryObject.location.state_code} ${eateryObject.location.postal_code}`),
+      'neighborhood': ko.observable(`${eateryObject.location.neighborhoods[0]}`),
       'website': ko.observable(business.website),
       'logoImage': ko.observable(business.logo),
       'rating': ko.observable(eateryObject.rating),
+      'ratingImage': ko.observable(eateryObject.rating_img_url_small),
+      'phone': ko.observable(eateryObject.display_phone),
       'lat': ko.observable(eateryObject.location.coordinate.latitude),
       'long': ko.observable(eateryObject.location.coordinate.longitude),
       'isSelected': ko.observable(false)
@@ -214,9 +217,12 @@ class MapViewModel {
       'name':         eateryObjectKO.name(),
       'addressLine1': eateryObjectKO.addressLine1(),
       'addressLine2': eateryObjectKO.addressLine2(),
+      'neighborhood': eateryObjectKO.neighborhood(),
       'website':      eateryObjectKO.website(),
       'logoImage':    eateryObjectKO.logoImage(),
       'rating':       eateryObjectKO.rating(),
+      'phone':        eateryObjectKO.phone(),
+      'ratingImage':  eateryObjectKO.ratingImage(),
       'lat':          eateryObjectKO.lat().toFixed(2),
       'long':         eateryObjectKO.long().toFixed(2)
     };
@@ -227,10 +233,12 @@ class MapViewModel {
                 ${eatery.addressLine1}<br>
                 ${eatery.addressLine2}
               </address>
+              <div>Neighborhood: ${eatery.neighborhood}</div>
+              <div rel="tel">${eatery.phone}</div>
               <a href="${eatery.website}" title="Visit ${eatery.name} website">
                 Visit ${eatery.name} website
               </a>
-              <div>Rating: ${eatery.rating}</div>
+              <div>Rating: <img src="${eatery.ratingImage}"></div>
               <div>Latitude/Longitude: ${eatery.lat}/${eatery.long}</div>
             </section>`;
   }

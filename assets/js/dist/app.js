@@ -58,9 +58,12 @@ var Eateries = function () {
         'name': ko.observable(eateryObject.name),
         'addressLine1': ko.observable(eateryObject.location.address[0]),
         'addressLine2': ko.observable(eateryObject.location.city + ', ' + eateryObject.location.state_code + ' ' + eateryObject.location.postal_code),
+        'neighborhood': ko.observable('' + eateryObject.location.neighborhoods[0]),
         'website': ko.observable(business.website),
         'logoImage': ko.observable(business.logo),
         'rating': ko.observable(eateryObject.rating),
+        'ratingImage': ko.observable(eateryObject.rating_img_url_small),
+        'phone': ko.observable(eateryObject.display_phone),
         'lat': ko.observable(eateryObject.location.coordinate.latitude),
         'long': ko.observable(eateryObject.location.coordinate.longitude),
         'isSelected': ko.observable(false)
@@ -248,14 +251,17 @@ var MapViewModel = function () {
         'name': eateryObjectKO.name(),
         'addressLine1': eateryObjectKO.addressLine1(),
         'addressLine2': eateryObjectKO.addressLine2(),
+        'neighborhood': eateryObjectKO.neighborhood(),
         'website': eateryObjectKO.website(),
         'logoImage': eateryObjectKO.logoImage(),
         'rating': eateryObjectKO.rating(),
+        'phone': eateryObjectKO.phone(),
+        'ratingImage': eateryObjectKO.ratingImage(),
         'lat': eateryObjectKO.lat().toFixed(2),
         'long': eateryObjectKO.long().toFixed(2)
       };
       //@see Template Literals: https://goo.gl/oH2hlN
-      return '<section class="EateryInfoWindow">\n              <h4> ' + eatery.name + ' </h4>\n              <address>\n                ' + eatery.addressLine1 + '<br>\n                ' + eatery.addressLine2 + '\n              </address>\n              <a href="' + eatery.website + '" title="Visit ' + eatery.name + ' website">\n                Visit ' + eatery.name + ' website\n              </a>\n              <div>Rating: ' + eatery.rating + '</div>\n              <div>Latitude/Longitude: ' + eatery.lat + '/' + eatery.long + '</div>\n            </section>';
+      return '<section class="EateryInfoWindow">\n              <h4> ' + eatery.name + ' </h4>\n              <address>\n                ' + eatery.addressLine1 + '<br>\n                ' + eatery.addressLine2 + '\n              </address>\n              <div>Neighborhood: ' + eatery.neighborhood + '</div>\n              <div rel="tel">' + eatery.phone + '</div>\n              <a href="' + eatery.website + '" title="Visit ' + eatery.name + ' website">\n                Visit ' + eatery.name + ' website\n              </a>\n              <div>Rating: <img src="' + eatery.ratingImage + '"></div>\n              <div>Latitude/Longitude: ' + eatery.lat + '/' + eatery.long + '</div>\n            </section>';
     }
   }]);
 
