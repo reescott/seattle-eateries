@@ -11,3 +11,7 @@ git clone https://github.com/reescott/seattle-eateries.git
 ```
 Method 2. Download Zip
 Click **Download Zip** button above and unzip in desired directory.
+
+## How to develop
+* Run `npm install` to install dependencies
+* Run `gulp` to compile css and js, as well as watch the files
