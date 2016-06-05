@@ -48,7 +48,7 @@ $BUSINESS_PATH = '/v2/business/';
  * @return   The JSON response from the request
  */
 function request($host, $path) {
-    $unsigned_url = "https://" . $host . $path;
+    $unsigned_url = "http://" . $host . $path;
 
     // Token object built using the OAuth library
     $token = new OAuthToken($GLOBALS['TOKEN'], $GLOBALS['TOKEN_SECRET']);

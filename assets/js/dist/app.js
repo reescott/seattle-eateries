@@ -28,11 +28,13 @@ var Eateries = function () {
       jQuery.ajax('assets/js/src/data.json').fail(function (response) {
         errorMessageHandler.displayError(defaultMessage);
       }).done(function (data) {
+        console.log(data);
         if (data) {
           try {
-            that.rawData = JSON.parse(data);
+            that.rawData = data;
             that.buildEateriesArray();
           } catch (e) {
+            console.log(e);
             errorMessageHandler.displayError('Sorry! Parsing Data failed. Please try again later.'); //error in the above string(in this case,yes)!
             return false;
           }
@@ -82,6 +84,7 @@ var Eateries = function () {
       }).fail(function (response) {
         errorMessageHandler.displayError(defaultMessage);
       }).done(function (response) {
+        console.log(response);
         if (response) {
           var eateryJSON = {};
           try {
