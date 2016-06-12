@@ -250,10 +250,9 @@ var MapViewModel = function () {
       });
       //Attach event listeners
       this.markers.forEach(function (marker, index) {
+        var thatIndex = index;
         marker.addListener('click', function () {
-          var content = that.renderInfoWindowContent(index);
-          that.infowindow.setContent(content);
-          that.infowindow.open(that.map, marker);
+          return that.selectMarker(thatIndex);
         });
       });
     }

@@ -217,10 +217,9 @@ class MapViewModel {
     });
     //Attach event listeners
     this.markers.forEach(function (marker, index) {
-      marker.addListener('click', function() {
-        let content = that.renderInfoWindowContent(index);
-        that.infowindow.setContent(content);
-        that.infowindow.open(that.map, marker);
+      let thatIndex = index;
+      marker.addListener('click', function(){
+        return that.selectMarker(thatIndex);
       });
     });
   }
