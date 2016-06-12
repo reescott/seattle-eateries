@@ -143,6 +143,10 @@ var eateriesViewModel = {
       }
     });
 
+    this.filterEateries.subscribe(function () {
+      theMapViewModel.filterMarkers();
+    });
+
     this.setCurrentEatery = function (eatery) {
       //Set eatery as selected
       that.allEateries().forEach(function (otherEatery) {
@@ -185,6 +189,26 @@ var MapViewModel = function () {
         zoomControl: true,
         scrollwheel: false,
         draggable: true
+      });
+    }
+  }, {
+    key: 'filterMarkers',
+    value: function filterMarkers() {
+      var that = this;
+      var markersToShow = eateriesViewModel.filterEateries();
+      var markersToHide = [];
+      this.markers.forEach(function (marker) {
+        markersToShow.forEach(function (eatery) {
+          if (eatery.id !== marker.id) {
+            markersToHide.push(marker);
+          }
+        });
+      });
+      markersToHide.forEach(function (marker) {
+        marker.setMap(null);
+      });
+      markersToShow.forEach(function (eatery) {
+        that.markers[eatery.id].setMap(that.map);
       });
     }
   }, {
