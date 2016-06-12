@@ -29,6 +29,20 @@
     "gulp-sourcemaps": "^1.6.0",
     "jshint": "^2.9.1"
   },
+  "eslintConfig": {
+    "ecmaVersion": 6,
+    "sourceType": "script",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
+    },
+    "rules": {
+        "semi": 2
+    }
+  },
   "dependencies": {
     "foundation-sites": "^6.2.3",
     "knockout": "^3.4.0",
