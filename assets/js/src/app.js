@@ -1,3 +1,7 @@
+/* ESLint */
+/* global jQuery, ko, google */
+
+
 /**
  * Eatery Processor class, builds and holds Eatery Objects
  * to make them available
@@ -14,12 +18,16 @@ class Eateries {
     let defaultMessage = 'Sorry! We could not locate the data. Please try again later.';
 
     jQuery.ajax('assets/js/src/data.json')
-    .fail(function (response) {
+    .fail(function () {
       errorMessageHandler.displayError(defaultMessage);
     })
     .done(function (data) {
       if (data){
         try {
+          //Parse only if not returned as JSON object
+          if(!(typeof data == 'object')){
+            data = JSON.parse(data);
+          }
           that.rawData = data;
           that.buildEateriesArray();
         } catch(e) {
@@ -57,8 +65,13 @@ class Eateries {
 
     //All data loaded
     if(that.data.length == that.rawData.eateries.length) {
-      eateriesViewModel.init(); //Initialize viewModel
-      theMapViewModel.plotMarkers();
+      //check if Google Maps has loaded
+      if (typeof google !== 'undefined') {
+        eateriesViewModel.init(); //Initialize viewModel
+        theMapViewModel.plotMarkers();
+      } else {
+        errorMessageHandler.displayError('Google Maps failed to load.');
+      }
     }
   }
   getYelpData(business) {
@@ -67,7 +80,7 @@ class Eateries {
     jQuery.ajax('api/getYelpBusiness.php', {
       data: { business: business.name }
     })
-    .fail(function (response) {
+    .fail(function () {
       errorMessageHandler.displayError(defaultMessage);
     })
     .done(function (response) {
@@ -79,7 +92,7 @@ class Eateries {
           errorMessageHandler.displayError('Sorry! Parsing Yelp Data failed. Please try again later.'); //error in the above string(in this case,yes)!
           return false;
         }
-        that.buildEatery(business, eateryJSON)
+        that.buildEatery(business, eateryJSON);
       } else {
         errorMessageHandler.displayError(defaultMessage);
       }
@@ -96,7 +109,7 @@ var eateriesViewModel = {
   init: function () {
     let that = this;
     this.allEateries = ko.observableArray(eateriesObject.data);
-    this.currentNameSearch = ko.observable("");
+    this.currentNameSearch = ko.observable('');
 
     this.filterEateries = ko.computed(function() {
       if(!that.currentNameSearch()) {
@@ -104,7 +117,7 @@ var eateriesViewModel = {
       } else {
         return ko.utils.arrayFilter(that.allEateries(), function(eatery) {
           //Matches any word that starts with string
-          let regex = new RegExp("\\b" + that.currentNameSearch(), 'gi');
+          let regex = new RegExp('\\b' + that.currentNameSearch(), 'gi');
           return !(eatery.name().search(regex) == -1);
         });
       }
@@ -176,7 +189,7 @@ class MapViewModel {
     let that = this;
     this.bounds = new google.maps.LatLngBounds();
 
-    this.markers.forEach(function (marker, index) {
+    this.markers.forEach(function (marker) {
       that.bounds.extend(marker.position);
     });
 
@@ -194,7 +207,7 @@ class MapViewModel {
   }
   showInfoWindow(index) {
     let content = this.renderInfoWindowContent(index);
-    this.infowindow.setContent(content)
+    this.infowindow.setContent(content);
     this.infowindow.open(this.map, this.markers[index]);
   }
   setupInfoWindow() {
@@ -206,7 +219,7 @@ class MapViewModel {
     this.markers.forEach(function (marker, index) {
       marker.addListener('click', function() {
         let content = that.renderInfoWindowContent(index);
-        that.infowindow.setContent(content)
+        that.infowindow.setContent(content);
         that.infowindow.open(that.map, marker);
       });
     });
@@ -246,12 +259,12 @@ class MapViewModel {
 
 class ErrorMessageHandler {
   displayError(message) {
-    $('#errorMessage').html(message);
-    $('#errorModal').foundation('open');
+    jQuery('#errorMessage').html(message);
+    jQuery('#errorModal').foundation('open');
   }
 }
 
 
+let errorMessageHandler = new ErrorMessageHandler();
 let eateriesObject = new Eateries();
 var theMapViewModel = new MapViewModel();
-let errorMessageHandler = new ErrorMessageHandler();

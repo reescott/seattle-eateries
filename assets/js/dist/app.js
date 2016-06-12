@@ -1,8 +1,13 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* ESLint */
+/* global jQuery, ko, google */
 
 /**
  * Eatery Processor class, builds and holds Eatery Objects
@@ -25,11 +30,15 @@ var Eateries = function () {
       var that = this;
       var defaultMessage = 'Sorry! We could not locate the data. Please try again later.';
 
-      jQuery.ajax('assets/js/src/data.json').fail(function (response) {
+      jQuery.ajax('assets/js/src/data.json').fail(function () {
         errorMessageHandler.displayError(defaultMessage);
       }).done(function (data) {
         if (data) {
           try {
+            //Parse only if not returned as JSON object
+            if (!((typeof data === 'undefined' ? 'undefined' : _typeof(data)) == 'object')) {
+              data = JSON.parse(data);
+            }
             that.rawData = data;
             that.buildEateriesArray();
           } catch (e) {
@@ -71,8 +80,13 @@ var Eateries = function () {
 
       //All data loaded
       if (that.data.length == that.rawData.eateries.length) {
-        eateriesViewModel.init(); //Initialize viewModel
-        theMapViewModel.plotMarkers();
+        //check if Google Maps has loaded
+        if (typeof google !== 'undefined') {
+          eateriesViewModel.init(); //Initialize viewModel
+          theMapViewModel.plotMarkers();
+        } else {
+          errorMessageHandler.displayError('Google Maps failed to load.');
+        }
       }
     }
   }, {
@@ -82,7 +96,7 @@ var Eateries = function () {
       var defaultMessage = 'Sorry! Retrieving Yelp Data failed. Please try again later.';
       jQuery.ajax('api/getYelpBusiness.php', {
         data: { business: business.name }
-      }).fail(function (response) {
+      }).fail(function () {
         errorMessageHandler.displayError(defaultMessage);
       }).done(function (response) {
         if (response) {
@@ -115,7 +129,7 @@ var eateriesViewModel = {
   init: function init() {
     var that = this;
     this.allEateries = ko.observableArray(eateriesObject.data);
-    this.currentNameSearch = ko.observable("");
+    this.currentNameSearch = ko.observable('');
 
     this.filterEateries = ko.computed(function () {
       if (!that.currentNameSearch()) {
@@ -123,7 +137,7 @@ var eateriesViewModel = {
       } else {
         return ko.utils.arrayFilter(that.allEateries(), function (eatery) {
           //Matches any word that starts with string
-          var regex = new RegExp("\\b" + that.currentNameSearch(), 'gi');
+          var regex = new RegExp('\\b' + that.currentNameSearch(), 'gi');
           return !(eatery.name().search(regex) == -1);
         });
       }
@@ -202,7 +216,7 @@ var MapViewModel = function () {
       var that = this;
       this.bounds = new google.maps.LatLngBounds();
 
-      this.markers.forEach(function (marker, index) {
+      this.markers.forEach(function (marker) {
         that.bounds.extend(marker.position);
       });
 
@@ -276,14 +290,14 @@ var ErrorMessageHandler = function () {
   _createClass(ErrorMessageHandler, [{
     key: 'displayError',
     value: function displayError(message) {
-      $('#errorMessage').html(message);
-      $('#errorModal').foundation('open');
+      jQuery('#errorMessage').html(message);
+      jQuery('#errorModal').foundation('open');
     }
   }]);
 
   return ErrorMessageHandler;
 }();
 
+var errorMessageHandler = new ErrorMessageHandler();
 var eateriesObject = new Eateries();
 var theMapViewModel = new MapViewModel();
-var errorMessageHandler = new ErrorMessageHandler();
